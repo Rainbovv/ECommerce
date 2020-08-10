@@ -10,6 +10,7 @@ public class DataRepo implements DataRepository {
 
 	@Override
 	public <T> void save(T entity) {
+		
 		String objectsClass = entity.getClass().toString().toLowerCase();
 		objectsClass = objectsClass.substring(objectsClass.lastIndexOf(".") + 1);
 
@@ -29,10 +30,10 @@ public class DataRepo implements DataRepository {
 	@Override
 	public <T> T load(Class<?> classType) {
 
+		T t = null;
+		
 		String objectsClass = classType.toString().toLowerCase();
 		objectsClass = objectsClass.substring(objectsClass.lastIndexOf(".") + 1);
-
-		T t = null;
 
 		try {
 			File file = new File(this.getClass().getResource("/" + objectsClass + ".bin").toURI());
@@ -43,6 +44,7 @@ public class DataRepo implements DataRepository {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		if (t == null) System.err.println("The file is empty!");
 
 		return t;
