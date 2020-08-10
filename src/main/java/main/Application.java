@@ -1,8 +1,14 @@
 package main;
 
 
+import domain.properties.Money;
+import domain.providers.MoneyProvider;
 import domain.repos.Cart;
 import domain.product.*;
+import domain.repos.DataRepo;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import static domain.providers.CurrencyProvider.BASE_CURRENCY;
 
@@ -18,18 +24,30 @@ public class Application {
                                                             "China", "Concrete Product");
 
 
-        Product fakeProduct = (Product)ProductFactory.getInstance()
-                                                     .getFakeProduct();
+        Money money = MoneyProvider.getInstance().getMoney(1000);
 
-        System.out.println(fakeProduct);
+        DataRepo.getInstance().save(money);
 
-        fakeProduct.setPrice(fakeProduct.getPrice().toCurrency("RON"));
-        System.out.println(fakeProduct);
+        money = DataRepo.getInstance().load(Money.class);
+
+        System.out.println(money);
+
+        DataRepo.getInstance().save(product);
+        product = DataRepo.getInstance().load(product.getClass());
+        System.out.println(product);
+
+//        Product fakeProduct = (Product)ProductFactory.getInstance()
+//                                                     .getFakeProduct();
+//
+//        System.out.println(fakeProduct);
+//
+//        fakeProduct.setPrice(fakeProduct.getPrice().toCurrency("RON"));
+//        System.out.println(fakeProduct);
 //        System.out.println(fakeProduct.getPrice().getCurrency().getRate());
 //        System.out.println(fakeProduct);
-
-        fakeProduct.setPrice(fakeProduct.getPrice().toCurrency("MDL"));
-        System.out.println(fakeProduct);
+//
+//        fakeProduct.setPrice(fakeProduct.getPrice().toCurrency("MDL"));
+//        System.out.println(fakeProduct);
 
 
 //        Cart.getInstance().add(product);

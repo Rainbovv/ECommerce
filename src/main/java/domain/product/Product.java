@@ -3,10 +3,11 @@ package domain.product;
 import domain.properties.Category;
 import domain.properties.Money;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @SuppressWarnings("deprecation")
-public class Product extends AbstractProduct {
+public class Product extends AbstractProduct implements Serializable {
 
     private Integer id;  // Unique, immutable
     private String name;

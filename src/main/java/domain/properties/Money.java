@@ -3,9 +3,10 @@ package domain.properties;
 
 import domain.providers.CurrencyProvider;
 
-public class Money {
+import java.io.Serializable;
 
-    private final CurrencyProvider currencyProvider = CurrencyProvider.getInstance();
+public class Money implements Serializable {
+
 
     private float amount;
     private Currency currency;
@@ -19,7 +20,7 @@ public class Money {
 
     private Money(float amount, String currencyCode) {
         this.amount = amount;
-        this.currency = currencyProvider.getCurrency(currencyCode);
+        this.currency = CurrencyProvider.getInstance().getCurrency(currencyCode);
     }
 
 
@@ -50,7 +51,7 @@ public class Money {
 
     public Money toCurrency(String currencyCode) {
 
-        Currency newCurrency = currencyProvider.getCurrency(currencyCode);
+        Currency newCurrency = CurrencyProvider.getInstance().getCurrency(currencyCode);
 
         if (newCurrency == null || currency.getCode().equals(currencyCode)) return this;
 
