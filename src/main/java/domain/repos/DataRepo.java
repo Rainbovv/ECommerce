@@ -40,7 +40,8 @@ public class DataRepo implements DataRepository {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
 
 			t = (T) in.readObject();
-
+			in.close();
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
