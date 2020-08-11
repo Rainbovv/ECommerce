@@ -26,10 +26,8 @@ public class DataRepo implements DataRepository {
 			fileName = "date_of_update";
 
 		try {
-
 			File file = new File(this.getClass().getResource("/" + fileName + ".bin").toURI());
 			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
-
 
 			out.writeObject(object);
 			out.close();
@@ -52,16 +50,15 @@ public class DataRepo implements DataRepository {
 
 		if (classType == Date.class)
 			fileName = "date_of_update";
-
+		
 		try {
 			File file = new File(this.getClass().getResource("/" + fileName + ".bin").toURI());
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
 
-
 			t = (T) in.readObject();
 			in.close();
 
-		}catch (Exception e) {
+		} catch (Exception e) {
 //			e.printStackTrace();
 		}
 		
