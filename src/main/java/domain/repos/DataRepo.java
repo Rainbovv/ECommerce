@@ -1,8 +1,11 @@
 package domain.repos;
 
 import domain.interfaces.DataRepository;
-
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class DataRepo implements DataRepository {
 
@@ -10,16 +13,25 @@ public class DataRepo implements DataRepository {
 
 	@Override
 	public <T> void save(T entity) {
+
+		T object = entity;
 		
-		String objectsClass = entity.getClass().toString().toLowerCase();
-		objectsClass = objectsClass.substring(objectsClass.lastIndexOf(".") + 1);
+		String fileName = entity.getClass().toString().toLowerCase();
+		fileName = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+		if (entity.getClass() == ArrayList.class)
+			fileName = "currencies";
+
+		if (entity.getClass() == Date.class)
+			fileName = "date_of_update";
 
 		try {
 
-			File file = new File(this.getClass().getResource("/" + objectsClass + ".bin").toURI());
+			File file = new File(this.getClass().getResource("/" + fileName + ".bin").toURI());
 			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
 
-			out.writeObject(entity);
+
+			out.writeObject(object);
 			out.close();
 
 		} catch (Exception e) {
@@ -31,18 +43,26 @@ public class DataRepo implements DataRepository {
 	public <T> T load(Class<?> classType) {
 
 		T t = null;
-		
-		String objectsClass = classType.toString().toLowerCase();
-		objectsClass = objectsClass.substring(objectsClass.lastIndexOf(".") + 1);
+
+		String fileName = classType.toString().toLowerCase();
+		fileName = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+		if (classType == ArrayList.class)
+			fileName = "currencies";
+
+		if (classType == Date.class)
+			fileName = "date_of_update";
 
 		try {
-			File file = new File(this.getClass().getResource("/" + objectsClass + ".bin").toURI());
+			File file = new File(this.getClass().getResource("/" + fileName + ".bin").toURI());
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
 
+
 			t = (T) in.readObject();
+			in.close();
 
 		}catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		
 		if (t == null) System.err.println("The file is empty!");

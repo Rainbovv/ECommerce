@@ -1,22 +1,19 @@
 package domain.providers;
 
 import domain.properties.Currency;
+import domain.repos.DataRepo;
 import org.jsoup.Jsoup;
-
-import java.io.*;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings({"deprecation","unchecked"})
-public class CurrencyProvider {
+public class CurrencyProvider{
 
     private CurrencyProvider(){}
 
 
     public static final Currency BASE_CURRENCY = new Currency("EUR", 1.00);
 
-    private static Map<String, Currency> currencies = new LinkedHashMap<String, Currency>() {{
+    private Map<String, Currency> currencies = new LinkedHashMap<>() {{
                                                             put("EUR", null);
                                                             put("USD", null);
                                                             put("MDL", null);
@@ -42,22 +39,15 @@ public class CurrencyProvider {
 
                 currencies.put(key, new Currency(key, Double.parseDouble(currencyRate)));
             }
-
-        dateOfUpdate = new Date();
-
-
-            ObjectOutputStream out = new ObjectOutputStream(
-                                        new FileOutputStream(
-                                                new File(this.getClass()
-                                                             .getResource("/currencies.bin").toURI())));
-
-            out.writeObject(currencies);
-            out.writeObject(dateOfUpdate);
-            out.close();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        dateOfUpdate = new Date();
+        List<Currency> updatedCurrencies = new ArrayList<>(currencies.values());
+
+        DataRepo.getInstance().save(updatedCurrencies);
+        DataRepo.getInstance().save(dateOfUpdate);
     }
 
     public Currency getCurrency(String currencyCode) {
@@ -68,24 +58,16 @@ public class CurrencyProvider {
             return null;
         }
 
-        Date actualDate = new Date();
+        List<Currency> updatedCurrencies;
 
-        try {
-            ObjectInputStream in = new ObjectInputStream(
-                                        new FileInputStream(
-                                                new File(this.getClass()
-                                                             .getResource("/currencies.bin").toURI())));
+        dateOfUpdate = DataRepo.getInstance().load(Date.class);
+        updatedCurrencies = DataRepo.getInstance().load(ArrayList.class);
 
-            currencies = (Map<String, Currency>) in.readObject();
-            dateOfUpdate = (Date) in.readObject();
-            in.close();
-
-        } catch (Exception e) {
-            System.err.println("The rates list is empty!\nUpdating currency rates...");
-        }
-
-        if (dateOfUpdate == null || actualDate.getDay() != dateOfUpdate.getDay())
+        if (dateOfUpdate == null || new Date().getDay() != dateOfUpdate.getDay() || updatedCurrencies == null) {
+            System.err.println("The rates list is deprecated or empty!\nUpdating currency rates...");
             getActualExchangeRates();
+
+        } else updatedCurrencies.forEach(c -> currencies.put(c.getCode(),c));
 
         return currencies.get(currencyCode);
     }

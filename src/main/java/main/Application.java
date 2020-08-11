@@ -1,27 +1,18 @@
 package main;
 
-
+import domain.product.*;
 import domain.properties.Money;
 import domain.providers.MoneyProvider;
-import domain.repos.Cart;
-import domain.product.*;
 import domain.repos.DataRepo;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import static domain.providers.CurrencyProvider.BASE_CURRENCY;
-
 
 public class Application {
 
     public static void main(String[] args) {
 
 
-        Product product = (Product)ProductFactory.getInstance()
-                                                .getProduct("Плюшевый Шмель",  15.99f, 125,
-                                                            156,10,25,
-                                                            "China", "Concrete Product");
+        Product product = (Product) ProductFactory.getInstance().getProduct("Плюшевый Шмель", 15.99f, 125, 156, 10, 25, "China", "Concrete Product");
+
+
 
 
         Money money = MoneyProvider.getInstance().getMoney(1000);
@@ -36,18 +27,21 @@ public class Application {
         product = DataRepo.getInstance().load(product.getClass());
         System.out.println(product);
 
-//        Product fakeProduct = (Product)ProductFactory.getInstance()
-//                                                     .getFakeProduct();
+        Product fakeProduct = (Product)ProductFactory.getInstance()
+                                                     .getFakeProduct();
+
+
 //
-//        System.out.println(fakeProduct);
-//
-//        fakeProduct.setPrice(fakeProduct.getPrice().toCurrency("RON"));
-//        System.out.println(fakeProduct);
+        System.out.println(fakeProduct);
+
+
+        fakeProduct.setPrice(fakeProduct.getPrice().toCurrency("RON"));
+        System.out.println(fakeProduct);
 //        System.out.println(fakeProduct.getPrice().getCurrency().getRate());
 //        System.out.println(fakeProduct);
 //
-//        fakeProduct.setPrice(fakeProduct.getPrice().toCurrency("MDL"));
-//        System.out.println(fakeProduct);
+        fakeProduct.setPrice(fakeProduct.getPrice().toCurrency("MDL"));
+        System.out.println(fakeProduct);
 
 
 //        Cart.getInstance().add(product);
