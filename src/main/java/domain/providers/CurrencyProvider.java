@@ -13,12 +13,11 @@ public class CurrencyProvider{
 
     public static final Currency BASE_CURRENCY = new Currency("EUR", 1.00);
 
-    private Map<String, Currency> currencies = new LinkedHashMap<>() {{
-                                                            put("EUR", null);
-                                                            put("USD", null);
-                                                            put("MDL", null);
-                                                            put("RUB", null);
-                                                            put("RON", null);}};
+    private Map<String, Currency> currencies = new LinkedHashMap<>(){{ put("EUR", null);
+                                                                       put("USD", null);
+                                                                       put("MDL", null);
+                                                                       put("RUB", null);
+                                                                       put("RON", null);}};
 
     private Date dateOfUpdate = null;
 
