@@ -22,7 +22,6 @@ public class ProductViewController {
 			Product product = DataRepo.getInstance().load(Product.class);
 
 			ImageView imageView = (ImageView)pane.getChildren().get(0);
-			System.out.println(getClass().getResource(product.getImagePath()));
 			Image image = new Image(String.valueOf(getClass().getResource(product.getImagePath())));
 			imageView.setImage(image);
 
@@ -33,6 +32,7 @@ public class ProductViewController {
 			Scene scene = new Scene(pane);
 
 			GUIApp.changeScene(scene);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
