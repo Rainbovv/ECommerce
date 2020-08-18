@@ -147,7 +147,7 @@ public class Cart implements ProductRepository {
     }
 
 
-    /////////////////////////// Business Logic ///////////////////////////
+    /** /////////////////////////// Business Logic /////////////////////////// **/
     public void calculateTotal(){
         float total = 0;
 

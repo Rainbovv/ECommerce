@@ -5,7 +5,7 @@ import domain.repos.DataRepo;
 import org.jsoup.Jsoup;
 import java.util.*;
 
-@SuppressWarnings({"deprecation","unchecked"})
+@SuppressWarnings({"deprecation"})
 public class CurrencyProvider{
 
     private CurrencyProvider(){}
@@ -13,7 +13,7 @@ public class CurrencyProvider{
 
     public static final Currency BASE_CURRENCY = new Currency("EUR", 1.00);
 
-    private Map<String, Currency> currencies = new LinkedHashMap<>(){{ put("EUR", null);
+    private Map<String, Currency> currencies = new LinkedHashMap<String, Currency>(){{ put("EUR", null);
                                                                        put("USD", null);
                                                                        put("MDL", null);
                                                                        put("RUB", null);

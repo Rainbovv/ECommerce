@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="89.0" prefWidth="210.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ProductViewController">
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="10.0" mnemonicParsing="false" onAction="#showProduct" prefHeight="69.0" prefWidth="182.0" text="Show Product!" textAlignment="CENTER">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Button>
+   <cursor>
+      <Cursor fx:constant="HAND" />
+   </cursor>
+</AnchorPane>

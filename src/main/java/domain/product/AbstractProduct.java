@@ -14,6 +14,7 @@ public abstract class AbstractProduct {
     abstract Date getExpDate();
     abstract String getManufacturer();
     abstract Category getCategory();
+    abstract String getImagePath();
 
     abstract void setName(String name);
     abstract void setPrice(float amount);
@@ -21,4 +22,5 @@ public abstract class AbstractProduct {
     abstract void setExpDate(int expirationYear, int expirationMonth, int expirationDay);
     abstract void setManufacturer(String manufacturer);
     abstract void setCategory(String categoryName);
+    abstract void setImagePath(String imagePath);
 }

@@ -22,11 +22,11 @@ public class ProductFactory {
 
     public AbstractProduct getProduct(String name, float price, int quantity, int expirationYear,
                                       int expirationMonth, int expirationDay, String manufacturer,
-                                      String categoryName) {
+                                      String categoryName, String imagePath) {
 
         return new Product(++productCount, name, moneyProvider.getMoney(price), quantity,
                             new Date(expirationYear, expirationMonth, expirationDay),
-                            manufacturer, categoryProvider.getCategory(categoryName));
+                            manufacturer, categoryProvider.getCategory(categoryName), imagePath);
     }
 
 
@@ -41,7 +41,7 @@ public class ProductFactory {
                             faker.random().nextInt(1, 10000), new Date(faker.random().nextInt(1, 10000),
                             faker.random().nextInt(1, 10000), faker.random().nextInt(1, 10000)),
                             faker.country().name(),
-                            categoryProvider.getCategory("Fake Product"));
+                            categoryProvider.getCategory("Fake Product"), faker.random().hex());
     }
 
 

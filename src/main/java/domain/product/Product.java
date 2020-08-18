@@ -9,17 +9,18 @@ import java.util.Date;
 @SuppressWarnings("deprecation")
 public class Product extends AbstractProduct implements Serializable {
 
-    private Integer id;  // Unique, immutable
+    private Integer id;   /** Unique, immutable */
     private String name;
     private Money price;
     private Integer quantity;
     private Date expiration;
     private String manufacturer;
     private Category category;
+    private String imagePath;
 
 
     Product(Integer id, String name, Money price, Integer quantity, Date date,
-                      String manufacturer, Category category) {
+                      String manufacturer, Category category, String imagePath) {
 
         this.id = id;
         this.name = name;
@@ -28,8 +29,11 @@ public class Product extends AbstractProduct implements Serializable {
         this.expiration = date;
         this.manufacturer = manufacturer;
         this.category = category;
+        this.imagePath = imagePath;
     }
 
+
+    /** /////////////////////////// Getters /////////////////////////// **/
     @Override
     public Integer getId() {
         return id;
@@ -63,6 +67,12 @@ public class Product extends AbstractProduct implements Serializable {
     @Override
     public Category getCategory() {
         return this.category;
+    }
+
+    /** /////////////////////////// Setters /////////////////////////// **/
+    @Override
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     @Override
@@ -101,14 +111,21 @@ public class Product extends AbstractProduct implements Serializable {
     }
 
     @Override
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    @Override
     public String toString() {
         return String.format("Product [ID = %d" +
-                           "%n         Name = %s," +
-                           "%n         Price = %s," +
-                           "%n         Quantity = %d," +
-                           "%n         Expiration date = %s," +
-                           "%n         Manufacturer = %s,"+
-                           "%n         Category = %s]%n", id, name, price, quantity,
-                                                         expiration.toGMTString(), manufacturer, category );
+                            "%n         Name = %s," +
+                            "%n         Price = %s," +
+                            "%n         Quantity = %d," +
+                            "%n         Expiration date = %s," +
+                            "%n         Manufacturer = %s,"+
+                            "%n         Category = %s,"+
+                            "%n         Image Path = %s]%n", id, name, price, quantity,
+                                                         expiration.toGMTString(), manufacturer,
+                                                        category, imagePath);
     }
 }

@@ -1,9 +1,9 @@
 package main;
 
 import domain.product.*;
-import domain.properties.Money;
-import domain.providers.MoneyProvider;
 import domain.repos.DataRepo;
+import java.io.IOException;
+
 
 public class Application {
 
@@ -12,28 +12,13 @@ public class Application {
 
         Product product = (Product) ProductFactory.getInstance()
                 .getProduct("Плюшевый Шмель", 15.99f, 125, 156,
-                        10, 25, "China", "Concrete Product");
+                        10, 25, "China", "Concrete Product", "/images/bumblebee.jpg");
+
         DataRepo.getInstance().save(product);
-        product = DataRepo.getInstance().load(product.getClass());
-        System.out.println(product);
 
 
+        GUIApp.main(args);
 
-        Money money = MoneyProvider.getInstance().getMoney(1000);
-        DataRepo.getInstance().save(money);
-        money = DataRepo.getInstance().load(Money.class);
-        System.out.println(money);
-
-
-
-        Product fakeProduct = (Product)ProductFactory.getInstance().getFakeProduct();
-        System.out.println(fakeProduct);
-
-        fakeProduct.setPrice(fakeProduct.getPrice().toCurrency("RON"));
-        System.out.println(fakeProduct);
-
-        fakeProduct.setPrice(fakeProduct.getPrice().toCurrency("ML"));
-        System.out.println(fakeProduct);
 
     }
 }

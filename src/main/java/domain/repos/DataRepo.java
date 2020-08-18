@@ -2,7 +2,10 @@ package domain.repos;
 
 import domain.interfaces.DataRepository;
 import java.io.*;
+import java.net.URI;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -11,7 +14,7 @@ public class DataRepo implements DataRepository {
 
 	private DataRepo() {}
 
-	private URL getFilePathByClassType(Class<?> classType) {
+	private URI getFilePathByClassType(Class<?> classType) {
 
 		String fileName;
 
@@ -26,7 +29,7 @@ public class DataRepo implements DataRepository {
 			fileName = fileName.substring(fileName.lastIndexOf(".") + 1);
 		}
 
-		return this.getClass().getResource("/" + fileName + ".bin");
+		return Paths.get("data/" + fileName + ".bin").toUri();
 
 	}
 
@@ -34,15 +37,16 @@ public class DataRepo implements DataRepository {
 	public <T> void save(T entity) {
 
 		try {
+			Files.createDirectories(Paths.get("data"));
+			File file = new File(getFilePathByClassType(entity.getClass()));
+			if(file.createNewFile()) {
+				ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
 
-			File file = new File(getFilePathByClassType(entity.getClass()).toURI());
-			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
-
-			out.writeObject(entity);
-			out.close();
-
+				out.writeObject(entity);
+				out.close();
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 
@@ -52,16 +56,16 @@ public class DataRepo implements DataRepository {
 		T entity = null;
 
 		try {
-			File file = new File(getFilePathByClassType(classType).toURI());
+			File file = new File(getFilePathByClassType(classType));
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
 
 			entity = (T)in.readObject();
 			in.close();
 
 		}catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
-		
+
 		if (entity == null) System.err.println("The file is empty!");
 
 		return entity;
