@@ -18,7 +18,7 @@ public class Money implements Serializable {
     }
 
 
-    private Money(float amount, String currencyCode) {
+    public Money(float amount, String currencyCode) {
         this.amount = amount;
         this.currency = CurrencyProvider.getInstance().getCurrency(currencyCode);
     }

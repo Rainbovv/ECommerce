@@ -16,16 +16,14 @@ public class ProductFactory {
     private final CategoryProvider categoryProvider = CategoryProvider.getInstance();
 
 
-    private Integer productCount = 0;
-
     private ProductFactory() {}
 
     public AbstractProduct getProduct(String name, float price, int quantity, int expirationYear,
                                       int expirationMonth, int expirationDay, String manufacturer,
                                       String categoryName, String imagePath) {
 
-        return new Product(++productCount, name, moneyProvider.getMoney(price), quantity,
-                            new Date(expirationYear, expirationMonth, expirationDay),
+        return new Product(name, moneyProvider.getMoney(price), quantity,
+                new Date(expirationYear-1900, expirationMonth-1, expirationDay+1),
                             manufacturer, categoryProvider.getCategory(categoryName), imagePath);
     }
 
@@ -34,7 +32,7 @@ public class ProductFactory {
 
         Faker faker = new Faker(new Locale("ru"));
 
-        return new Product(++productCount, faker.commerce().productName(),
+        return new Product(faker.commerce().productName(),
                             moneyProvider.getMoney(Float.parseFloat(faker.commerce()
                                                                          .price()
                                                                          .replaceAll("[,]", "." ))),

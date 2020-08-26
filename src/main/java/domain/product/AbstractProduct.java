@@ -7,7 +7,6 @@ import java.util.Date;
 
 public abstract class AbstractProduct {
 
-    abstract Integer getId();
     abstract String getName();
     abstract Money getPrice();
     abstract Integer getQuantity();

@@ -1,28 +1,29 @@
 package domain.providers;
 
 import domain.properties.Currency;
-import domain.repos.DataRepo;
+import domain.repos.CurrencyRepository;
 import org.jsoup.Jsoup;
+
+import java.sql.Date;
 import java.util.*;
 
-@SuppressWarnings({"deprecation"})
 public class CurrencyProvider{
 
     private CurrencyProvider(){}
 
 
+    private final CurrencyRepository currencyRepository = CurrencyRepository.getInstance();
+
     public static final Currency BASE_CURRENCY = new Currency("EUR", 1.00);
 
-    private Map<String, Currency> currencies = new LinkedHashMap<String, Currency>(){{ put("EUR", null);
+    public Map<String, Currency> currencies = new LinkedHashMap<String, Currency>(){{ put("EUR", null);
                                                                        put("USD", null);
                                                                        put("MDL", null);
                                                                        put("RUB", null);
                                                                        put("RON", null);}};
 
-    private Date dateOfUpdate = null;
 
-
-    private void getActualExchangeRates() {
+    public void getActualExchangeRates() {
 
         try {
             for (String key: currencies.keySet()) {
@@ -42,11 +43,10 @@ public class CurrencyProvider{
             e.printStackTrace();
         }
 
-        dateOfUpdate = new Date();
-        List<Currency> updatedCurrencies = new ArrayList<>(currencies.values());
+        if (currencyRepository.selectAll().size() == 0) currencies.values().forEach(currencyRepository::save);
 
-        DataRepo.getInstance().save(updatedCurrencies);
-        DataRepo.getInstance().save(dateOfUpdate);
+        else currencies.values().forEach(c -> currencyRepository.updateRate(c.getCode(),c.getRate()));
+        currencyRepository.closeConnection();
     }
 
     public Currency getCurrency(String currencyCode) {
@@ -57,18 +57,19 @@ public class CurrencyProvider{
             return null;
         }
 
-        List<Currency> updatedCurrencies;
+        if (this.currencies.get(currencyCode) == null) {
+            List<Currency> currencies = currencyRepository.selectByDateOfUpdate(new Date(System.currentTimeMillis()));
 
-        dateOfUpdate = DataRepo.getInstance().load(Date.class);
-        updatedCurrencies = DataRepo.getInstance().load(ArrayList.class);
 
-        if (dateOfUpdate == null || new Date().getDay() != dateOfUpdate.getDay() || updatedCurrencies == null) {
-            System.err.println("The rates list is deprecated or empty!\nUpdating currency rates...");
-            getActualExchangeRates();
+            if (currencies == null || currencies.size() == 0) {
+                System.err.println("The rates list is deprecated or empty!\nUpdating currency rates...");
+                getActualExchangeRates();
 
-        } else updatedCurrencies.forEach(c -> currencies.put(c.getCode(),c));
+            } else currencies.forEach(c -> this.currencies.put(c.getCode(), c));
+            currencyRepository.closeConnection();
+        }
 
-        return currencies.get(currencyCode);
+        return this.currencies.get(currencyCode);
     }
 
     private static class SingletonHolder {

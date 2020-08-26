@@ -4,29 +4,28 @@ import domain.properties.Category;
 import domain.properties.Money;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
+
 
 @SuppressWarnings("deprecation")
 public class Product extends AbstractProduct implements Serializable {
 
-    private Integer id;   /** Unique, immutable */
+    private int id;
     private String name;
     private Money price;
     private Integer quantity;
-    private Date expiration;
+    private Date expirationDate;
     private String manufacturer;
     private Category category;
     private String imagePath;
 
 
-    Product(Integer id, String name, Money price, Integer quantity, Date date,
-                      String manufacturer, Category category, String imagePath) {
+    public Product(String name, Money price, Integer quantity, java.util.Date date, String manufacturer, Category category, String imagePath) {
 
-        this.id = id;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
-        this.expiration = date;
+        this.expirationDate = new Date(date.getTime());
         this.manufacturer = manufacturer;
         this.category = category;
         this.imagePath = imagePath;
@@ -34,8 +33,9 @@ public class Product extends AbstractProduct implements Serializable {
 
 
     /** /////////////////////////// Getters /////////////////////////// **/
-    @Override
-    public Integer getId() {
+
+
+    public int getId() {
         return id;
     }
 
@@ -56,7 +56,7 @@ public class Product extends AbstractProduct implements Serializable {
 
     @Override
     public Date getExpDate() {
-        return this.expiration;
+        return this.expirationDate;
     }
 
     @Override
@@ -69,7 +69,14 @@ public class Product extends AbstractProduct implements Serializable {
         return this.category;
     }
 
+
+
     /** /////////////////////////// Setters /////////////////////////// **/
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
@@ -92,7 +99,7 @@ public class Product extends AbstractProduct implements Serializable {
 
     @Override
     public void setExpDate(int expirationYear, int expirationMonth, int expirationDay) {
-        this.expiration = new Date(expirationYear, expirationMonth, expirationDay);
+        this.expirationDate = new Date(expirationYear, expirationMonth, expirationDay);
     }
 
     @Override
@@ -117,15 +124,14 @@ public class Product extends AbstractProduct implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Product [ID = %d" +
-                            "%n         Name = %s," +
+        return String.format("Product [Name = %s," +
                             "%n         Price = %s," +
                             "%n         Quantity = %d," +
                             "%n         Expiration date = %s," +
                             "%n         Manufacturer = %s,"+
                             "%n         Category = %s,"+
-                            "%n         Image Path = %s]%n", id, name, price, quantity,
-                                                         expiration.toGMTString(), manufacturer,
+                            "%n         Image Path = %s]%n", name, price, quantity,
+                                                         expirationDate.toGMTString(), manufacturer,
                                                         category, imagePath);
     }
 }

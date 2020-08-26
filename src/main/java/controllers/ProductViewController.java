@@ -1,7 +1,7 @@
 package controllers;
 
 import domain.product.Product;
-import domain.repos.DataRepo;
+import domain.repos.DataRepository;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -19,7 +19,7 @@ public class ProductViewController {
 		try {
 			Pane pane = FXMLLoader.load(getClass().getResource("/fxml/product-template.fxml"));
 
-			Product product = DataRepo.getInstance().load(Product.class);
+			Product product = (Product) DataRepository.getInstance().selectAll("products").get(0);
 
 			ImageView imageView = (ImageView)pane.getChildren().get(0);
 			Image image = new Image(String.valueOf(getClass().getResource(product.getImagePath())));
